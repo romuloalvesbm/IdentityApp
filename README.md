@@ -1,4 +1,4 @@
-# UsuariosApp
+# IdentityApp
 
 Este é um projeto de exemplo chamado IdentityApp, uma API ASP.NET Core que gerencia usuários utilizando Entity Framework Core, Swagger, JWT.
 
