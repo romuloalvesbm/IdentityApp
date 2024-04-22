@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿    using AutoMapper;
 using Projeto.Identity.Domain.Contracts.Repositories;
 using Projeto.Identity.Domain.Contracts.Services;
 using Projeto.Identity.Domain.Dtos;
@@ -25,20 +25,20 @@ namespace Projeto.Identity.Domain.Services
             _sistemaRepository = sistemaRepository;
         }
 
-        public async Task<PerfilResponseDTO> CreateAsync(PerfilCadastroModel model)
+        public async Task<(PerfilResponseDTO dto, string mensagem)> CreateAsync(PerfilCadastroModel model)
         {
             try
             {
                 if (!await _sistemaRepository.AnyAsync(x => x.Id == model.SistemaId))
-                    return new PerfilResponseDTO { Mensagem_Excecao = "Sistema não encontrado." };
+                    return(new PerfilResponseDTO(), "Sistema não encontrado.");
 
-                if (await _perfilRepository.AnyAsync(x => x.Nome == model.Nome))
-                    return new PerfilResponseDTO { Mensagem_Excecao = "Perfil já cadastrado." };
+                if (await _perfilRepository.AnyAsync(x => x.Nome == model.Nome && x.SistemaId == model.SistemaId))
+                    return (new PerfilResponseDTO(), "Perfil já cadastrado.");
 
                 var perfil = _mapper.Map<Perfil>(model);
                 await _perfilRepository.CreateAsync(perfil);
 
-                return _mapper.Map<PerfilResponseDTO>(perfil);
+                return (_mapper.Map<PerfilResponseDTO>(perfil), string.Empty);
             }
             catch (Exception)
             {
@@ -46,21 +46,22 @@ namespace Projeto.Identity.Domain.Services
             }
         }
 
-        public async Task<PerfilResponseDTO> UpdateAsync(PerfilEdicaoModel model)
+        public async Task<(PerfilResponseDTO dto, string mensagem)> UpdateAsync(PerfilEdicaoModel model)
         {
             try
             {
                 var perfil = await _perfilRepository.GetByIdAsync(model.Id);
-                if (perfil != null)
-                    return new PerfilResponseDTO { Mensagem_Excecao = "Perfil não encontrado." };
+                if (perfil == null)
+                    return (new PerfilResponseDTO(), "Perfil não encontrado.");
 
-                var sistema = await _sistemaRepository.GetByIdAsync(model.Id);
-                if (sistema != null)
-                    return new PerfilResponseDTO { Mensagem_Excecao = "Sistema não encontrado." };
+                if (!await _sistemaRepository.AnyAsync(x => x.Id == model.SistemaId))
+                    return (new PerfilResponseDTO(),"Sistema não encontrado.");
 
-                await _perfilRepository.UpdateAsync(_mapper.Map<Perfil>(perfil));
+                _mapper.Map(model, perfil);
 
-                return _mapper.Map<PerfilResponseDTO>(perfil);
+                await _perfilRepository.UpdateAsync(perfil);
+
+                return (_mapper.Map<PerfilResponseDTO>(perfil), string.Empty);
             }
             catch (Exception)
             {
@@ -79,7 +80,7 @@ namespace Projeto.Identity.Domain.Services
                     await _perfilRepository.DeleteAsync(perfil);
                 }
 
-                return _mapper.Map<PerfilResponseDTO>(perfil);
+                return _mapper.Map<PerfilResponseDTO>(model);
             }
             catch (Exception)
             {

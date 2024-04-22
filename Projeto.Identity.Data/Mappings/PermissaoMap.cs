@@ -24,6 +24,11 @@ namespace Projeto.Identity.Data.Mappings
                 .HasColumnName("Descricao")
                 .HasMaxLength(150)
                 .IsRequired();
+
+            builder.Property(c => c.ChaveAutorizacao)
+                .HasColumnName("ChaveAutorizacao")
+                .HasMaxLength(150)
+                .IsRequired();
         }
     }
 }

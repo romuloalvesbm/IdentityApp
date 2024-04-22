@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Projeto.CrossCutting.Authorization;
 using Projeto.Identity.Domain.Contracts.Services;
 using Projeto.Identity.Domain.Dtos;
 using Projeto.Identity.Domain.Models.Sistema;
@@ -10,24 +11,25 @@ namespace Projeto.Identity.API.Controllers
     [ApiController]
     public class SistemaController : ControllerBase
     {
-        private readonly ISistemaDomainService _sistemaService;
+        private readonly ISistemaDomainService _sistemaDomainService;
 
         public SistemaController(ISistemaDomainService sistemaService)
         {
-            _sistemaService = sistemaService;
+            _sistemaDomainService = sistemaService;
         }
 
+        [ClaimsAuthorize("CustomizePermission", "CadastrarSistema")]
         [HttpPost]
         public async Task<IActionResult> Post(SistemaCadastroModel model)
         {
             try
             {
-                var result = await _sistemaService.CreateAsync(model);
+                var result = await _sistemaDomainService.CreateAsync(model);
 
-                if (result.IsFinalizado)
-                    return Ok(result);
+                if (string.IsNullOrEmpty(result.mensagem))
+                    return Ok(result.dto);
                 else
-                    return StatusCode(400, new { result.Mensagem_Excecao });
+                    return StatusCode(400, new { result.mensagem });
             }
             catch (Exception e)
             {
@@ -35,17 +37,18 @@ namespace Projeto.Identity.API.Controllers
             }
         }
 
+        [ClaimsAuthorize("CustomizePermission", "EditarSistema")]
         [HttpPut]
         public async Task<IActionResult> Put(SistemaEdicaoModel model)
         {
             try
             {
-                var result = await _sistemaService.UpdateAsync(model);
+                var result = await _sistemaDomainService.UpdateAsync(model);
 
-                if (result.IsFinalizado)
-                    return Ok(result);
+                if (string.IsNullOrEmpty(result.mensagem))
+                    return Ok(result.dto);
                 else
-                    return StatusCode(400, new { result.Mensagem_Excecao });
+                    return StatusCode(400, new { result.mensagem });
             }
             catch (Exception e)
             {
@@ -53,17 +56,14 @@ namespace Projeto.Identity.API.Controllers
             }
         }
 
+        [ClaimsAuthorize("CustomizePermission", "ExcluirSistema")]
         [HttpDelete]
         public async Task<IActionResult> Delete(SistemaExclusaoModel model)
         {
             try
             {
-                var result = await _sistemaService.DeleteAsync(model);
-
-                if (result.IsFinalizado)
-                    return Ok(result);
-                else
-                    return StatusCode(400, new { result.Mensagem_Excecao });
+                var result = await _sistemaDomainService.DeleteAsync(model);
+                return Ok(result);
             }
             catch (Exception e)
             {
@@ -71,12 +71,13 @@ namespace Projeto.Identity.API.Controllers
             }
         }
 
+        [ClaimsAuthorize("CustomizePermission", "ListarSistema")]
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {
             try
             {
-                return Ok(await _sistemaService.GetAllAsync());
+                return Ok(await _sistemaDomainService.GetAllAsync());
             }
             catch (Exception e)
             {
@@ -84,12 +85,13 @@ namespace Projeto.Identity.API.Controllers
             }
         }
 
+        [ClaimsAuthorize("CustomizePermission", "ListarFiltroSistema")]
         [HttpGet("GetAllFilter")]
         public async Task<IActionResult> GetAll([FromQuery] SistemaRequestDTO dto)
         {
             try
             {
-                return Ok(await _sistemaService.GetAllAsync(dto));
+                return Ok(await _sistemaDomainService.GetAllAsync(dto));
             }
             catch (Exception e)
             {
@@ -111,12 +113,13 @@ namespace Projeto.Identity.API.Controllers
         //    }
         //}       
 
+        [ClaimsAuthorize("CustomizePermission", "ObterPorIdSistema")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             try
             {
-                return Ok(await _sistemaService.GetByIdAsync(id));
+                return Ok(await _sistemaDomainService.GetByIdAsync(id));
             }
             catch (Exception e)
             {

@@ -9,5 +9,6 @@ namespace Projeto.Identity.Domain.Contracts.Repositories
 {
     public interface IUsuarioRepository : IBaseRepository<Usuario>
     {
+        Task<Usuario> GetByEmailAsync(string email);
     }
 }

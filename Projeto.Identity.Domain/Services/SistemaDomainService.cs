@@ -23,17 +23,17 @@ namespace Projeto.Identity.Domain.Services
             _sistemaRepository = sistemaRepository;
         }
 
-        public async Task<SistemaResponseDTO> CreateAsync(SistemaCadastroModel model)
+        public async Task<(SistemaResponseDTO dto, string mensagem)> CreateAsync(SistemaCadastroModel model)
         {
             try
             {
                 if (await _sistemaRepository.AnyAsync(x => x.Nome == model.Nome))
-                    return new SistemaResponseDTO { Mensagem_Excecao = "Sistema já cadastrado." };
+                    return (new SistemaResponseDTO(), "Sistema já cadastrado.");
 
                 var sistema = _mapper.Map<Sistema>(model);
                 await _sistemaRepository.CreateAsync(sistema);
 
-                return _mapper.Map<SistemaResponseDTO>(sistema);
+                return (_mapper.Map<SistemaResponseDTO>(sistema), string.Empty);
             }
             catch (Exception)
             {
@@ -52,7 +52,7 @@ namespace Projeto.Identity.Domain.Services
                     await _sistemaRepository.DeleteAsync(sistema);
                 }
 
-                return _mapper.Map<SistemaResponseDTO>(sistema);
+                return _mapper.Map<SistemaResponseDTO>(model);
             }
             catch (Exception)
             {
@@ -61,18 +61,20 @@ namespace Projeto.Identity.Domain.Services
 
         }
 
-        public async Task<SistemaResponseDTO> UpdateAsync(SistemaEdicaoModel model)
+        public async Task<(SistemaResponseDTO dto, string mensagem)> UpdateAsync(SistemaEdicaoModel model)
         {
             try
             {
                 var sistema = await _sistemaRepository.GetByIdAsync(model.Id);
 
-                if (sistema != null)
-                    return new SistemaResponseDTO { Mensagem_Excecao = "Sistema não encontrado." };
+                if (sistema == null)
+                    return (new SistemaResponseDTO(), "Sistema não encontrado.");
 
-                await _sistemaRepository.UpdateAsync(_mapper.Map<Sistema>(sistema));
+                _mapper.Map(model, sistema);
 
-                return _mapper.Map<SistemaResponseDTO>(sistema);
+                await _sistemaRepository.UpdateAsync(sistema);
+
+                return (_mapper.Map<SistemaResponseDTO>(sistema), string.Empty);
             }
             catch (Exception)
             {

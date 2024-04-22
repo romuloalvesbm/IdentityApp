@@ -1,4 +1,5 @@
-﻿using Projeto.Identity.Data.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using Projeto.Identity.Data.Context;
 using Projeto.Identity.Domain.Contracts.Repositories;
 using Projeto.Identity.Domain.Entities;
 using System;
@@ -16,6 +17,19 @@ namespace Projeto.Identity.Data.Repository
         public UsuarioRepository(DataContext dataContext) : base(dataContext)
         {
             _dataContext = dataContext;
+        }
+
+        public override async Task<List<Usuario>> GetAllAsync()
+        {
+            return await _dataContext.Usuarios.Include(x => x.UsuarioxPerfilxSistemas)
+                                              .ThenInclude(x => x.Perfil).ThenInclude(x => x.Sistema)
+                                              .Include(x => x.UsuarioxPerfilxSistemas)
+                                              .ThenInclude(x => x.Perfil).ThenInclude(x => x.PerfilxPermissoes).ThenInclude(x => x.Permissao).ToListAsync();
+        }
+
+        public async Task<Usuario> GetByEmailAsync(string email)
+        {
+            return await _dataContext.Usuarios.FirstOrDefaultAsync(x => x.Email == email);
         }
     }
 }

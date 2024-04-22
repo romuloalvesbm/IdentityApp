@@ -32,7 +32,7 @@ namespace Projeto.Identity.Data.Mappings
 
             builder.Property(c => c.Senha)
               .HasColumnName("Senha")
-              .HasMaxLength(10)
+              .HasColumnType("nvarchar(max)")
               .IsRequired();
 
             builder.Property(c => c.DataCriacao)

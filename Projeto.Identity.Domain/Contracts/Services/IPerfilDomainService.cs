@@ -10,8 +10,8 @@ namespace Projeto.Identity.Domain.Contracts.Services
 {
     public interface IPerfilDomainService
     {
-        Task<PerfilResponseDTO> CreateAsync(PerfilCadastroModel model);
-        Task<PerfilResponseDTO> UpdateAsync(PerfilEdicaoModel model);
+        Task<(PerfilResponseDTO dto, string mensagem)> CreateAsync(PerfilCadastroModel model);
+        Task<(PerfilResponseDTO dto, string mensagem)> UpdateAsync(PerfilEdicaoModel model);
         Task<PerfilResponseDTO> DeleteAsync(PerfilExclusaoModel model);
 
         Task<List<PerfilResponseDTO>> GetAllAsync();

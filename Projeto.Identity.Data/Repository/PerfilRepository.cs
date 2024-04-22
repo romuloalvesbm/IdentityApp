@@ -21,7 +21,7 @@ namespace Projeto.Identity.Data.Repository
 
         public override async Task<List<Perfil>> GetAllAsync()
         {
-            return await _dataContext.Perfils.Include(x => x.Sistema).ToListAsync();
+            return await _dataContext.Perfils.Include(x => x.Sistema).Include(x => x.PerfilxPermissoes).ThenInclude(x => x.Permissao).ToListAsync();
         }
     }
 }

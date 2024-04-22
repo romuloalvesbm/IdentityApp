@@ -16,14 +16,14 @@ namespace Projeto.Identity.API.Extensions
                     //Informações exibidas na documentação do Swagger
                     options.SwaggerDoc("v1", new OpenApiInfo
                     {
-                        Title = "Identity User API - Treinamento C# Avançado Formação Arquiteto",
+                        Title = "Identity User API - Gerenciamento de Acesso Multissistema",
                         Description = "API para autenticação e controle de usuários.",
                         Version = "1.0",
                         Contact = new OpenApiContact
                         {
-                            Name = "COTI Informática",
-                            Email = "contato@cotiinformatica.com.br",
-                            Url = new Uri("http://wwww.cotiinformatica.com.br")
+                            Name = "Rômulo Alves",
+                            Email = "romuloalves.br@gmail.com.br",
+                            Url = new Uri("https://www.linkedin.com/in/rômulo-alves-a4144113b/")
                         }
                     });
 

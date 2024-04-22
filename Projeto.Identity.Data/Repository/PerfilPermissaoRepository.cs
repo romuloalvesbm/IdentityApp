@@ -1,4 +1,5 @@
-﻿using Projeto.Identity.Data.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using Projeto.Identity.Data.Context;
 using Projeto.Identity.Domain.Contracts.Repositories;
 using Projeto.Identity.Domain.Entities;
 using System;
@@ -17,5 +18,10 @@ namespace Projeto.Identity.Data.Repository
         {
             _dataContext = dataContext;
         }
+
+        public override async Task<List<PerfilPermissao>> GetAllAsync()
+        {
+            return await _dataContext.PerfilPermissoes.Include(x => x.Perfil).ThenInclude(x => x.Sistema).Include(x => x.Permissao).ToListAsync();
+        }        
     }
 }

@@ -10,8 +10,8 @@ namespace Projeto.Identity.Domain.Contracts.Services
 {
     public interface ISistemaDomainService
     {
-        Task<SistemaResponseDTO> CreateAsync(SistemaCadastroModel model);
-        Task<SistemaResponseDTO> UpdateAsync(SistemaEdicaoModel model);
+        Task<(SistemaResponseDTO dto, string mensagem)> CreateAsync(SistemaCadastroModel model);
+        Task<(SistemaResponseDTO dto, string mensagem)> UpdateAsync(SistemaEdicaoModel model);
         Task<SistemaResponseDTO> DeleteAsync(SistemaExclusaoModel model);
 
         Task<List<SistemaResponseDTO>> GetAllAsync();

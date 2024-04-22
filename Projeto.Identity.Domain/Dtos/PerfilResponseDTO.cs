@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace Projeto.Identity.Domain.Dtos
 {
-    public class PerfilResponseDTO : MensagemDTO
+    public class PerfilResponseDTO
     {
         public Guid Id { get; set; }
         public string Nome { get; set; }
         public Guid SistemaId { get; set; }
         public string Sistema { get; set; }
+
+        public List<PermissaoResponseDTO> PermissaoDTOs { get; set; }
     }
 }
 
