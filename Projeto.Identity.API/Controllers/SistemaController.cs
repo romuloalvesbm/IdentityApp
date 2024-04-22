@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Projeto.CrossCutting.Authorization;
 using Projeto.Identity.Domain.Contracts.Services;
@@ -7,6 +8,7 @@ using Projeto.Identity.Domain.Models.Sistema;
 
 namespace Projeto.Identity.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SistemaController : ControllerBase
