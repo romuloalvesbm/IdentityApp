@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Projeto.Identity.API.Extensions
 {
@@ -55,6 +56,32 @@ namespace Projeto.Identity.API.Extensions
                             new string[]{ }
                         }
                     });
+
+                    options.AddSecurityDefinition("ApiVersion", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                    {
+                        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                        Name = "X-ApiVersion",
+                        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+                        Description = "Cabeçalho para especificar a versão da API"
+                    });
+
+                    options.AddSecurityDefinition("ClientId", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                    {
+                        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                        Name = "client_id",
+                        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+                        Description = "Cabeçalho para especificar o ID do cliente"
+                    });
+
+                    options.AddSecurityDefinition("ClientSecret", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                    {
+                        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                        Name = "client_secret",
+                        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+                        Description = "Cabeçalho para especificar o segredo do cliente"
+                    });
+
+                    options.OperationFilter<CustomHeaderSwaggerAttribute>();
                 });
 
             return services;
@@ -71,6 +98,48 @@ namespace Projeto.Identity.API.Extensions
             });
 
             return app;
+        }
+
+        public class CustomHeaderSwaggerAttribute : IOperationFilter
+        {
+            public void Apply(OpenApiOperation operation, OperationFilterContext context)
+            {
+                if (operation.Parameters == null)
+                    operation.Parameters = new List<OpenApiParameter>();
+
+                operation.Parameters.Add(new OpenApiParameter
+                {
+                    Name = "X-ApiVersion",
+                    In = ParameterLocation.Header,
+                    Required = true, // Defina como true se o cabeçalho for obrigatório
+                    Schema = new OpenApiSchema
+                    {
+                        Type = "string"
+                    }
+                });
+
+                operation.Parameters.Add(new OpenApiParameter
+                {
+                    Name = "client_id",
+                    In = ParameterLocation.Header,
+                    Required = true,
+                    Schema = new OpenApiSchema
+                    {
+                        Type = "string"
+                    }
+                });
+
+                operation.Parameters.Add(new OpenApiParameter
+                {
+                    Name = "client_secret",
+                    In = ParameterLocation.Header,
+                    Required = true,
+                    Schema = new OpenApiSchema
+                    {
+                        Type = "string"
+                    }
+                });
+            }
         }
     }
 }

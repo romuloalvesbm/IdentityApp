@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Projeto.CrossCutting.Authorization;
 using Projeto.Identity.API.Models;
 using Projeto.Identity.API.Services;
+using Projeto.Identity.API.Settings;
 using Projeto.Identity.Domain.Contracts.Services;
 
 namespace Projeto.Identity.API.Controllers
@@ -14,12 +17,14 @@ namespace Projeto.Identity.API.Controllers
         private readonly IUsuarioDomainService _usuarioDomainService;
         private readonly IUsuarioPerfilSistemaDomainService _usuarioPerfilSistemaDomainService;
         private readonly JwtTokenService _jwtTokenService;
+        private readonly RequestAuthorization _requestAuthorization;
 
-        public LoginController(IUsuarioDomainService usuarioDomainService, JwtTokenService jwtTokenService, IUsuarioPerfilSistemaDomainService usuarioPerfilSistemaDomainService)
+        public LoginController(IUsuarioDomainService usuarioDomainService, JwtTokenService jwtTokenService, IUsuarioPerfilSistemaDomainService usuarioPerfilSistemaDomainService, RequestAuthorization requestAuthorization)
         {
             _usuarioDomainService = usuarioDomainService;
             _jwtTokenService = jwtTokenService;
             _usuarioPerfilSistemaDomainService = usuarioPerfilSistemaDomainService;
+            _requestAuthorization = requestAuthorization;
         }
 
         private string msgAcessoNegado => "Acesso negado. Usuário inválido.";
@@ -28,6 +33,13 @@ namespace Projeto.Identity.API.Controllers
         [Route("autenticar")] //ENDPOINT: api/usuarios/autenticar
         public async Task<IActionResult> Autenticar(AutenticarUsuarioRequestModel model)
         {
+            var request = _requestAuthorization.ValidationProcess(HttpContext);
+
+            if (request != null)
+            {
+                return request == "BadRequest" ? BadRequest("Invalid API version.") : Unauthorized("Invalid client credentials.");
+            }
+
             #region Buscar o usuário através do email
 
             var usuario = await _usuarioDomainService.GetByEmailAsync(model.Email);

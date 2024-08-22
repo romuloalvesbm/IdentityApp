@@ -1,6 +1,7 @@
 using Projeto.Identity.API.Extensions;
 using Projeto.Identity.Domain.Extensions;
 using Projeto.Identity.Data.Extensions;
+using Projeto.CrossCutting.Authorization.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ builder.Services.AddDataContext(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddJwtBearer(builder.Configuration);
 builder.Services.AddCorsConfig();
+builder.Services.AddValidationConfig(builder.Configuration);
 
 var app = builder.Build();
 
