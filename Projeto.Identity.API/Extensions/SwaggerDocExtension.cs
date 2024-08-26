@@ -107,38 +107,43 @@ namespace Projeto.Identity.API.Extensions
                 if (operation.Parameters == null)
                     operation.Parameters = new List<OpenApiParameter>();
 
-                operation.Parameters.Add(new OpenApiParameter
-                {
-                    Name = "X-ApiVersion",
-                    In = ParameterLocation.Header,
-                    Required = true, // Defina como true se o cabeçalho for obrigatório
-                    Schema = new OpenApiSchema
-                    {
-                        Type = "string"
-                    }
-                });
+                var controllerName = context.ApiDescription.ActionDescriptor.RouteValues["controller"];
 
-                operation.Parameters.Add(new OpenApiParameter
+                if (controllerName == "Login")
                 {
-                    Name = "client_id",
-                    In = ParameterLocation.Header,
-                    Required = true,
-                    Schema = new OpenApiSchema
+                    operation.Parameters.Add(new OpenApiParameter
                     {
-                        Type = "string"
-                    }
-                });
+                        Name = "X-ApiVersion",
+                        In = ParameterLocation.Header,
+                        Required = true, // Defina como true se o cabeçalho for obrigatório
+                        Schema = new OpenApiSchema
+                        {
+                            Type = "string"
+                        }
+                    });
 
-                operation.Parameters.Add(new OpenApiParameter
-                {
-                    Name = "client_secret",
-                    In = ParameterLocation.Header,
-                    Required = true,
-                    Schema = new OpenApiSchema
+                    operation.Parameters.Add(new OpenApiParameter
                     {
-                        Type = "string"
-                    }
-                });
+                        Name = "client_id",
+                        In = ParameterLocation.Header,
+                        Required = true,
+                        Schema = new OpenApiSchema
+                        {
+                            Type = "string"
+                        }
+                    });
+
+                    operation.Parameters.Add(new OpenApiParameter
+                    {
+                        Name = "client_secret",
+                        In = ParameterLocation.Header,
+                        Required = true,
+                        Schema = new OpenApiSchema
+                        {
+                            Type = "string"
+                        }
+                    });
+                }
             }
         }
     }

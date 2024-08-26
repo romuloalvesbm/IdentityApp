@@ -7,6 +7,7 @@ using Projeto.Identity.API.Models;
 using Projeto.Identity.API.Services;
 using Projeto.Identity.API.Settings;
 using Projeto.Identity.Domain.Contracts.Services;
+using System.Net;
 
 namespace Projeto.Identity.API.Controllers
 {
@@ -35,9 +36,9 @@ namespace Projeto.Identity.API.Controllers
         {
             var request = _requestAuthorization.ValidationProcess(HttpContext);
 
-            if (request != null)
+            if (request.StatusCode != HttpStatusCode.OK)
             {
-                return request == "BadRequest" ? BadRequest("Invalid API version.") : Unauthorized("Invalid client credentials.");
+                return request.StatusCode == HttpStatusCode.BadRequest ? BadRequest("Invalid API version.") : Unauthorized("Invalid client credentials.");
             }
 
             #region Buscar o usuário através do email
