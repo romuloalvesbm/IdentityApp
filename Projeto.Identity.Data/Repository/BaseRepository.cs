@@ -54,7 +54,7 @@ namespace Projeto.Identity.Data.Repository
             return await dataContext.Set<TEntity>().FirstOrDefaultAsync(where);
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(Guid id)
+        public virtual async Task<TEntity?> GetByIdAsync(Guid id)
         {
             return await dataContext.Set<TEntity>().FindAsync(id);
         }

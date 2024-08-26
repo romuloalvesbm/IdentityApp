@@ -16,7 +16,7 @@ namespace Projeto.Identity.Domain.Contracts.Repositories
         Task<List<TEntity>> GetAllAsync();
         Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> where);
 
-        Task<TEntity> GetByIdAsync(Guid id);
+        Task<TEntity?> GetByIdAsync(Guid id);
         Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where);
 
         Task<bool> AnyAsync();

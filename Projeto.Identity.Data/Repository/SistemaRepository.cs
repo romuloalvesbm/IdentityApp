@@ -23,6 +23,11 @@ namespace Projeto.Identity.Data.Repository
         {
             return await dataContext.Sistemas.Include(x => x.Perfils).ThenInclude(x => x.PerfilxPermissoes).ThenInclude(x => x.Permissao).ToListAsync();
         }
+
+        public override async Task<Sistema> GetByIdAsync(Guid id)
+        {
+            return await dataContext.Sistemas.Include(x => x.Perfils).ThenInclude(x => x.PerfilxPermissoes).ThenInclude(x => x.Permissao).FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }
 
