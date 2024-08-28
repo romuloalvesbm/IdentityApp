@@ -205,6 +205,12 @@ namespace Projeto.Identity.Data.Context
                    Id = Guid.Parse("ace0f930-6c44-4fef-aa8a-5a92a1fc8402"),
                     Descricao = "Listar Usuario Perfil Sistema",
                     ChaveAutorizacao = "ListarUsuarioPerfilSistema",
+                },                
+                new Permissao
+                {
+                    Id = Guid.Parse("CB50C0DD-76E0-4763-B997-5344E5DC84E4"),
+                    Descricao = "Obter Permissões do Usuário no Sistema",
+                    ChaveAutorizacao = "ObterPermissaoUsuarioNoSistema",
                 },
                 new Permissao
                 {
@@ -427,6 +433,13 @@ namespace Projeto.Identity.Data.Context
                         PerfilId = Guid.Parse("e6d4582c-cce8-45c4-a633-08cae8d80aef"),
                         SistemaId = Guid.Parse("6a88cdcc-d445-44d1-8ca3-7dd60ddc1af3"),
                         PermissaoId = Guid.Parse("ace0f930-6c44-4fef-aa8a-5a92a1fc8402"),
+                    },
+                    new PerfilPermissao
+                    {
+                        IdPerfilPermissao = Guid.Parse("3D1CBEE5-1243-4F23-92DE-1AB7C3FAB496"),
+                        PerfilId = Guid.Parse("e6d4582c-cce8-45c4-a633-08cae8d80aef"),
+                        SistemaId = Guid.Parse("6a88cdcc-d445-44d1-8ca3-7dd60ddc1af3"),
+                        PermissaoId = Guid.Parse("CB50C0DD-76E0-4763-B997-5344E5DC84E4"),
                     },
                     new PerfilPermissao
                     {

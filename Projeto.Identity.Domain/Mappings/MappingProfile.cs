@@ -120,6 +120,10 @@ namespace Projeto.Identity.Domain.Mappings
                 .ForMember(dest => dest.Perfil, map => map.MapFrom(src => src.Perfil.Nome))
                 .ReverseMap();
 
+            CreateMap<
+                UsuarioPerfilSistema, UsuarioSistemaPerfilPermissaoResponseDTO>()
+              .ForMember(dest => dest.UsuarioResponseDTO, map => map.MapFrom(src => src.Usuario));
+
             #endregion
         }
     }

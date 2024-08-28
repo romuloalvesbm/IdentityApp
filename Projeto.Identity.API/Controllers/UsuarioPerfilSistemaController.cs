@@ -68,5 +68,19 @@ namespace Projeto.Identity.API.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+
+        [ClaimsAuthorize("CustomizePermission", "ObterPermissaoUsuarioNoSistema")]
+        [HttpGet("ObterPermissaoUsuario")]
+        public async Task<IActionResult> ObterPermissaoUsuario([FromQuery] Guid sistemaId, Guid usuarioId)
+        {
+            try
+            {
+                return Ok(await _usuarioPerfilSistemaDomainService.ObterPermissaoUsuario(sistemaId, usuarioId));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
     }
 }

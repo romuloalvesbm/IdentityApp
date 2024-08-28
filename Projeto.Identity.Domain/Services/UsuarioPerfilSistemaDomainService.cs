@@ -94,6 +94,18 @@ namespace Projeto.Identity.Domain.Services
             return await _usuarioPerfilSistemaRepository.ObterPerfilUsuario(sistemaId, UsuarioId);
         }
 
+        public async Task<UsuarioSistemaPerfilPermissaoResponseDTO> ObterPermissaoUsuario(Guid sistemaId, Guid usuarioId)
+        {
+            try
+            {
+                return _mapper.Map<UsuarioSistemaPerfilPermissaoResponseDTO>(await _usuarioPerfilSistemaRepository.ObterPermissaoUsuario(sistemaId, usuarioId));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<List<string>> ObterPermissoes(Guid sistemaId, Guid perfilId)
         {
             return await _usuarioPerfilSistemaRepository.ObterPermissoes(sistemaId, perfilId);         

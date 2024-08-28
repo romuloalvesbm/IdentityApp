@@ -30,6 +30,13 @@ namespace Projeto.Identity.Data.Repository
             return (await _dataContext.UsuarioPerfilSistemas.FirstOrDefaultAsync(x => x.SistemaId == sistemaId && x.UsuarioId == UsuarioId))?.PerfilId;
         }
 
+        public async Task<UsuarioPerfilSistema?> ObterPermissaoUsuario(Guid sistemaId, Guid usuarioId)
+        {
+            return await _dataContext.UsuarioPerfilSistemas.Include(x => x.Usuario).Include(x => x.Perfil).ThenInclude(x => x.Sistema)
+                                                                                   .Include(x => x.Perfil).ThenInclude(x => x.PerfilxPermissoes).ThenInclude(x => x.Permissao)
+                                                                                  .FirstOrDefaultAsync(x => x.SistemaId == sistemaId && x.Usuario.Id == usuarioId);                                                                                  
+        }
+
         public async Task<List<string>> ObterPermissoes(Guid sistemaId, Guid perfilId)
         {
             return await _dataContext.UsuarioPerfilSistemas.Include(x => x.Usuario).Include(x => x.Perfil).ThenInclude(x => x.PerfilxPermissoes).ThenInclude(x => x.Permissao)

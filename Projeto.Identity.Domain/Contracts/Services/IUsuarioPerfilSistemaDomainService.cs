@@ -22,5 +22,6 @@ namespace Projeto.Identity.Domain.Contracts.Services
 
         Task<List<string>> ObterPermissoes(Guid sistemaId, Guid perfilId);
         Task<Guid?> ObterPerfilUsuario(Guid sistemaId, Guid UsuarioId);
+        Task<UsuarioSistemaPerfilPermissaoResponseDTO>ObterPermissaoUsuario(Guid sistemaId, Guid usuarioId);
     }
 }

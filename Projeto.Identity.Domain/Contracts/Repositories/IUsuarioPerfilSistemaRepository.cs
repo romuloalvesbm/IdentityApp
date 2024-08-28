@@ -11,5 +11,6 @@ namespace Projeto.Identity.Domain.Contracts.Repositories
     {
         Task<List<string>> ObterPermissoes(Guid sistemaId, Guid perfilId);
         Task<Guid?> ObterPerfilUsuario(Guid sistemaId, Guid UsuarioId);
+        Task<UsuarioPerfilSistema?> ObterPermissaoUsuario(Guid sistemaId, Guid usuarioId);
     }
 }
