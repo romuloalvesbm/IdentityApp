@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  projeto.identity.api:
+    image: ${DOCKER_REGISTRY-}projetoidentityapi
+    build:
+      context: .
+      dockerfile: Projeto.Identity.API/Dockerfile
+    depends_on:
+     - sqlserver
+    environment:
+     - ASPNETCORE_ENVIRONMENT=Homolog 
+    ports:
+     - "5043:8080"
+
+  sqlserver:
+    container_name: sqlserverbase
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+     SA_PASSWORD: "RAlves@2024"
+     ACCEPT_EULA: "Y"
+    ports:
+     - "1433:1433"

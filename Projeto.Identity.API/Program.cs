@@ -5,6 +5,11 @@ using Projeto.CrossCutting.Authorization.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
+
 // Add services to the container.
 
 builder.Services.AddControllers().AddJsonOptions(options =>
