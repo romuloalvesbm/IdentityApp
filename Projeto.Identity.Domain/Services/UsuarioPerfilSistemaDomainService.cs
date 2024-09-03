@@ -37,6 +37,9 @@ namespace Projeto.Identity.Domain.Services
                 if (!await _usuarioRepository.AnyAsync(x => x.Id == model.UsuarioId))
                     return (new UsuarioPerfilSistemaResponseDTO(), "Usuário não encontrado.");
 
+                if (await _usuarioPerfilSistemaRepository.AnyAsync(x => x.UsuarioId == model.UsuarioId && x.PerfilId == model.PerfilId && x.SistemaId == model.SistemaId))
+                    return (new UsuarioPerfilSistemaResponseDTO(), "Usuário já cadastrado no sistema.");
+
                 var usuarioPerfilPermissao = _mapper.Map<UsuarioPerfilSistema>(model);
                 await _usuarioPerfilSistemaRepository.CreateAsync(usuarioPerfilPermissao);
 
