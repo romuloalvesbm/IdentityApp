@@ -7,6 +7,7 @@ using Projeto.Identity.API.Models;
 using Projeto.Identity.API.Services;
 using Projeto.Identity.API.Settings;
 using Projeto.Identity.Domain.Contracts.Services;
+using Projeto.Identity.Domain.Dtos;
 using System.Net;
 
 namespace Projeto.Identity.API.Controllers
@@ -28,7 +29,7 @@ namespace Projeto.Identity.API.Controllers
             _requestAuthorization = requestAuthorization;
         }
 
-        private string msgAcessoNegado => "Acesso negado. Usuário inválido.";
+        private static string MsgAcessoNegado => "Acesso negado. Usuário inválido.";
 
         [HttpPost]
         [Route("autenticar")] //ENDPOINT: api/usuarios/autenticar
@@ -45,7 +46,7 @@ namespace Projeto.Identity.API.Controllers
 
             var usuario = await _usuarioDomainService.GetByEmailAsync(model.Email);
             if (usuario == null)
-                return StatusCode(401, new { Message = msgAcessoNegado });
+                return StatusCode(401, new { Message = MsgAcessoNegado });
 
             #endregion
 
@@ -53,7 +54,7 @@ namespace Projeto.Identity.API.Controllers
 
             var isPasswordValid = _usuarioDomainService.VerifyPassword(usuario.Senha, model.Senha);
             if (!isPasswordValid)
-                return StatusCode(401, new { Message = msgAcessoNegado });
+                return StatusCode(401, new { Message = MsgAcessoNegado });
 
             #endregion
 
@@ -63,7 +64,7 @@ namespace Projeto.Identity.API.Controllers
 
             var perfilId = await _usuarioPerfilSistemaDomainService.ObterPerfilUsuario(model.SistemaId, usuario.Id);
             if (perfilId == null)
-                return StatusCode(401, new { Message = msgAcessoNegado });
+                return StatusCode(401, new { Message = MsgAcessoNegado });
 
             #endregion
 
