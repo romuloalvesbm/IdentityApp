@@ -234,7 +234,7 @@ namespace Projeto.Identity.Data.Context
                 {
                    Id = Guid.Parse("648717f2-97d3-42b2-8242-a2dba4d43d4d"),
                     Descricao = "Editar Usuario",
-                    ChaveAutorizacao = "Editar Usuario",
+                    ChaveAutorizacao = "EditarUsuario",
                 },
                 new Permissao
                 {
