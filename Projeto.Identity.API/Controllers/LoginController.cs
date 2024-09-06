@@ -78,7 +78,7 @@ namespace Projeto.Identity.API.Controllers
                                                             Id = usuario.Id,
                                                             Nome = usuario.Nome,
                                                             Email = usuario.Email,
-                                                            Permissoes = await _usuarioPerfilSistemaDomainService.ObterPermissoes(model.SistemaId, (Guid)perfilId)
+                                                            Permissoes = await _usuarioPerfilSistemaDomainService.ObterPermissoes(model.SistemaId, (Guid)perfilId, usuario.Id)
                                                            }),
                 DataHoraAcesso = DateTime.Now
             };

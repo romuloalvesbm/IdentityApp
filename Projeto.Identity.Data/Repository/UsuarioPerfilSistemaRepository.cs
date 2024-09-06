@@ -37,10 +37,10 @@ namespace Projeto.Identity.Data.Repository
                                                                                   .FirstOrDefaultAsync(x => x.SistemaId == sistemaId && x.Usuario.Id == usuarioId);                                                                                  
         }
 
-        public async Task<List<string>> ObterPermissoes(Guid sistemaId, Guid perfilId)
+        public async Task<List<string>> ObterPermissoes(Guid sistemaId, Guid perfilId, Guid usuarioId)
         {
             return await _dataContext.UsuarioPerfilSistemas.Include(x => x.Usuario).Include(x => x.Perfil).ThenInclude(x => x.PerfilxPermissoes).ThenInclude(x => x.Permissao)
-                                                                                   .Where(x => x.Perfil.SistemaId == sistemaId && x.PerfilId == perfilId)
+                                                                                   .Where(x => x.Perfil.SistemaId == sistemaId && x.PerfilId == perfilId && x.UsuarioId == usuarioId)
                                                                                    .Select(x => x.Perfil).SelectMany(x => x.PerfilxPermissoes).Select(x => x.Permissao.ChaveAutorizacao)
                                                                                    .ToListAsync();
         }

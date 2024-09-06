@@ -9,7 +9,7 @@ namespace Projeto.Identity.Domain.Contracts.Repositories
 {
     public interface IUsuarioPerfilSistemaRepository : IBaseRepository<UsuarioPerfilSistema>
     {
-        Task<List<string>> ObterPermissoes(Guid sistemaId, Guid perfilId);
+        Task<List<string>> ObterPermissoes(Guid sistemaId, Guid perfilId, Guid usuarioId);
         Task<Guid?> ObterPerfilUsuario(Guid sistemaId, Guid UsuarioId);
         Task<UsuarioPerfilSistema?> ObterPermissaoUsuario(Guid sistemaId, Guid usuarioId);
     }

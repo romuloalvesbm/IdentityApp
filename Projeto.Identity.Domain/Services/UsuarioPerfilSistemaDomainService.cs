@@ -109,9 +109,9 @@ namespace Projeto.Identity.Domain.Services
             }
         }
 
-        public async Task<List<string>> ObterPermissoes(Guid sistemaId, Guid perfilId)
+        public async Task<List<string>> ObterPermissoes(Guid sistemaId, Guid perfilId, Guid usuarioId)
         {
-            return await _usuarioPerfilSistemaRepository.ObterPermissoes(sistemaId, perfilId);         
+            return await _usuarioPerfilSistemaRepository.ObterPermissoes(sistemaId, perfilId, usuarioId);         
         }
 
         public Task<(UsuarioPerfilSistemaResponseDTO dto, string mensagem)> UpdateAsync(UsuarioPerfilSistemaEdicaoModel model)
