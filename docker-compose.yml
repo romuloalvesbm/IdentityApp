@@ -7,17 +7,25 @@ services:
       context: .
       dockerfile: Projeto.Identity.API/Dockerfile
     depends_on:
-     - sqlserver
+      - sqlserver
     environment:
-     - ASPNETCORE_ENVIRONMENT=Homolog 
+      - ASPNETCORE_ENVIRONMENT=Homolog
     ports:
-     - "5043:8080"
+      - "5033:8080"
+    networks:
+      - external_network
 
   sqlserver:
     container_name: sqlserverbase
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
-     SA_PASSWORD: "RAlves@2024"
-     ACCEPT_EULA: "Y"
+      SA_PASSWORD: "RAlves@2024"
+      ACCEPT_EULA: "Y"
     ports:
-     - "1433:1433"
+      - "1433:1433"
+    networks:
+      - external_network
+
+networks:
+  external_network:
+    external: true
